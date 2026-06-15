@@ -1,0 +1,62 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Closing act — append to frontend/app/globals.css (inside @layer components,
+   or at file end). These are the CSS-variable-driven bits (--lit / --hot)
+   that ClosingSpine writes each frame; everything else is Tailwind in the
+   section components.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* PROCESS — stations on the spine */
+.cl-timeline { position: relative; margin-top: 5rem; }
+.cl-step {
+  position: relative; display: grid; grid-template-columns: 1fr 96px 1fr;
+  align-items: center; min-height: 30vh; padding-block: 1rem;
+}
+.cl-step .cl-copy { will-change: transform, opacity; max-width: 30rem; }
+.cl-step:nth-child(odd)  .cl-copy  { grid-column: 1; text-align: right; justify-self: end; }
+.cl-step:nth-child(odd)  .cl-blank { grid-column: 3; }
+.cl-step:nth-child(even) .cl-blank { grid-column: 1; }
+.cl-step:nth-child(even) .cl-copy  { grid-column: 3; text-align: left; }
+.cl-step:nth-child(odd)  .cl-copy p.cl-body { margin-left: auto; }
+
+.cl-node {
+  grid-column: 2; justify-self: center; position: relative; z-index: 3;
+  width: 64px; height: 64px; border-radius: 999px; display: grid; place-items: center;
+  background: var(--color-parch-soft);
+  border: 1px solid color-mix(in srgb, var(--color-gold) calc(30% + var(--lit,0) * 70%), transparent);
+  box-shadow: 0 0 calc(var(--lit,0) * 40px) color-mix(in srgb, var(--color-gold) calc(var(--lit,0) * 60%), transparent),
+              inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.cl-node b {
+  font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--color-gold-deep) calc(100% - var(--lit,0) * 100%), var(--color-gold));
+}
+
+/* STUDIO — the constellation */
+.cl-constellation { position: relative; margin-top: 4rem; height: 560px; }
+.cl-hub {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 3;
+  width: 132px; height: 132px; border-radius: 999px; display: grid; place-items: center; text-align: center;
+  background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--color-gold) 22%, var(--color-parch-soft)), var(--color-parch-soft));
+  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  box-shadow: 0 12px 40px rgba(20,18,46,0.14);
+}
+.cl-member { position: absolute; z-index: 4; width: 184px; transform: translate(-50%,-50%); will-change: transform; }
+.cl-member .cl-surface {
+  background: var(--color-parch-soft);
+  border: 1px solid color-mix(in srgb, var(--color-gold) calc(28% + var(--hot,0) * 62%), transparent);
+  border-radius: 16px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.7rem;
+  box-shadow: 0 calc(8px + var(--hot,0) * 14px) calc(24px + var(--hot,0) * 22px) rgba(20,18,46, calc(0.08 + var(--hot,0) * 0.1));
+}
+
+/* mobile / no-spine fallback: plain stacks */
+@media (max-width: 859px), (prefers-reduced-motion: reduce) {
+  .cl-timeline { max-width: 40rem; margin-inline: auto; }
+  .cl-step { grid-template-columns: 56px 1fr; min-height: 0; gap: 1.2rem; padding-block: 1.4rem; text-align: left !important; }
+  .cl-step .cl-copy { grid-column: 2 !important; text-align: left !important; justify-self: start !important; max-width: none; }
+  .cl-step .cl-blank { display: none; }
+  .cl-step .cl-node { grid-column: 1 !important; width: 48px; height: 48px; --lit: 0.4; }
+  .cl-step .cl-copy p.cl-body { margin-left: 0 !important; }
+  .cl-constellation { position: static; height: auto; display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
+  .cl-hub { position: static; transform: none; width: 100%; height: auto; border-radius: 16px; padding: 1.2rem; grid-column: 1 / -1; }
+  .cl-member { position: static; transform: none; width: auto; --hot: 0.3; }
+}

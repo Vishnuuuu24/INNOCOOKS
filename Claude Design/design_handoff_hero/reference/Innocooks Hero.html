@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>InnoCooks — Hero study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --dusk: #1e1b45;
+    --dusk-deep: #14122e;
+    --dusk-soft: #2a2659;
+    --parch: #ece5d6;
+    --ink: #211e4b;
+    --cream: #f0ebdc;
+    --muted: #5e5a7d;
+    --mist: #a9a5c8;
+    --gold: #c9a55c;
+    --gold-deep: #7a5f22;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Geist", system-ui, sans-serif;
+    --mono: "Geist Mono", ui-monospace, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { height: 100%; }
+  body {
+    background: var(--dusk);
+    color: var(--cream);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow: hidden;
+  }
+
+  ::selection { background: var(--gold); color: var(--dusk); }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  /* the dusk deepens at the edges — a vignette gives the air a room */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(120% 100% at 50% 38%, transparent 40%, rgba(10,8,28,0.55) 100%);
+  }
+  /* film grain — straight from their system */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  }
+
+  canvas { position: fixed; inset: 0; pointer-events: none; }
+  #atmo { z-index: 1; }
+  #thread-back { z-index: 2; }
+  #thread-front { z-index: 4; }
+
+  /* ── nav ─────────────────────────────────────────────────────────── */
+  header { position: fixed; inset: 16px 0 auto; z-index: 30; }
+  nav {
+    width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.5rem;
+  }
+  .pill {
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid rgba(240,235,220,0.1); border-radius: 999px;
+    background: rgba(20,18,46,0.55); backdrop-filter: blur(14px);
+    padding: 0.5rem 0.6rem 0.5rem 1.5rem;
+  }
+  .pill .mark { font-family: var(--serif); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.16em; }
+  .pill ul { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
+  .pill a.lnk { color: rgba(240,235,220,0.82); font-size: 0.86rem; text-decoration: none; transition: color 0.3s var(--ease); }
+  .pill a.lnk:hover { color: var(--cream); }
+  .pill .cta {
+    background: var(--gold); color: var(--dusk); font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em; padding: 0.65rem 1.15rem;
+    border-radius: 999px; text-decoration: none; transition: filter 0.3s var(--ease);
+  }
+  .pill .cta:hover { filter: brightness(1.08); }
+  @media (max-width: 720px) { .pill ul { display: none; } }
+
+  /* ── stage ───────────────────────────────────────────────────────── */
+  .stage {
+    position: relative; z-index: 3;
+    min-height: 100svh; display: flex; flex-direction: column; justify-content: center;
+    width: 100%; max-width: 80rem; margin-inline: auto; padding: 7rem 1.5rem 11rem;
+  }
+  @media (min-width: 768px) { .stage { padding-inline: 3.5rem; } }
+
+  .label {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--gold);
+    transition: opacity 0.9s var(--ease) 0.5s, transform 0.9s var(--ease) 0.5s;
+  }
+  body:not(.ready) .label { opacity: 0; transform: translateY(16px); }
+
+  h1.word {
+    font-family: var(--serif); font-weight: 400; font-variation-settings: "opsz" 144;
+    text-transform: uppercase; line-height: 0.92; letter-spacing: -0.02em;
+    white-space: nowrap; margin-top: 1.4rem; user-select: none;
+    font-size: clamp(2.4rem, 12vw, 11rem);
+  }
+  .mask { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .ltr {
+    display: inline-block; will-change: transform;
+    transition: transform 1.05s var(--ease); transition-delay: calc(var(--i) * 0.045s);
+  }
+  body:not(.ready) .ltr { transform: translateY(115%); transition-delay: 0s; }
+
+  .lede-row {
+    margin-top: 2.6rem; display: flex; flex-direction: column; gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .lede-row { margin-top: 3.4rem; flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  }
+  .lede {
+    max-width: 27rem; font-size: 1.12rem; line-height: 1.6; color: var(--mist);
+    transition: opacity 0.9s var(--ease) 0.85s, transform 0.9s var(--ease) 0.85s;
+  }
+  body:not(.ready) .lede { opacity: 0; transform: translateY(20px); }
+  .actions { display: flex; flex-wrap: wrap; gap: 1rem;
+    transition: opacity 0.9s var(--ease) 0.98s, transform 0.9s var(--ease) 0.98s; }
+  body:not(.ready) .actions { opacity: 0; transform: translateY(20px); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.6rem; border-radius: 999px;
+    padding: 1rem 1.9rem; font-size: 0.95rem; text-decoration: none; cursor: pointer;
+    transition: transform 0.35s var(--ease), filter 0.35s var(--ease), border-color 0.35s var(--ease), opacity 0.35s var(--ease);
+  }
+  .btn-gold { background: var(--gold); color: var(--dusk); font-weight: 600; border: 1px solid var(--gold); }
+  .btn-gold:hover { filter: brightness(1.08); transform: scale(1.03); }
+  .btn-ghost { border: 1px solid rgba(240,235,220,0.5); color: var(--cream); opacity: 0.86; }
+  .btn-ghost:hover { opacity: 1; border-color: var(--gold); }
+
+  .scroll-hint { display: none; }
+
+  /* ── direction switcher ──────────────────────────────────────────── */
+  .switch {
+    position: fixed; z-index: 25; left: 50%; bottom: 2rem; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.85rem;
+    transition: opacity 0.9s var(--ease) 1.45s;
+  }
+  body:not(.ready) .switch { opacity: 0; }
+  .switch .pills {
+    display: flex; gap: 0.3rem; padding: 0.3rem;
+    border: 1px solid rgba(240,235,220,0.12); border-radius: 999px;
+    background: rgba(20,18,46,0.6); backdrop-filter: blur(14px);
+  }
+  .switch button {
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--mist); background: none; border: 0; cursor: pointer; border-radius: 999px;
+    padding: 0.6rem 1.1rem; transition: color 0.3s var(--ease), background 0.3s var(--ease);
+  }
+  .switch button:hover { color: var(--cream); }
+  .switch button.on { color: var(--dusk); background: var(--gold); }
+  #mode-desc {
+    font-size: 0.82rem; color: var(--mist); max-width: 30rem; text-align: center;
+    transition: opacity 0.25s var(--ease); min-height: 1.2em; padding-inline: 1rem;
+  }
+  @media (max-width: 600px) { #mode-desc { display: none; } }
+
+  /* ── notes drawer ────────────────────────────────────────────────── */
+  #notes-btn {
+    position: fixed; z-index: 25; left: 1.5rem; bottom: 2rem;
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--mist); background: rgba(20,18,46,0.6); backdrop-filter: blur(14px);
+    border: 1px solid rgba(240,235,220,0.12); border-radius: 999px; padding: 0.7rem 1.1rem; cursor: pointer;
+    transition: opacity 0.9s var(--ease) 1.45s, color 0.3s var(--ease);
+  }
+  body:not(.ready) #notes-btn { opacity: 0; }
+  #notes-btn:hover { color: var(--cream); }
+  @media (max-width: 720px) { #notes-btn { display: none; } }
+
+  #notes {
+    position: fixed; z-index: 40; top: 0; right: 0; height: 100%;
+    width: min(420px, 92vw); background: var(--dusk-deep);
+    border-left: 1px solid rgba(201,165,92,0.2);
+    transform: translateX(100%); transition: transform 0.55s var(--ease);
+    overflow-y: auto; padding: 5rem 2.2rem 3rem;
+  }
+  body.notes-open #notes { transform: none; }
+  #notes h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 0.4rem; }
+  #notes .k { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin: 1.8rem 0 0.6rem; }
+  #notes p { color: var(--mist); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.6rem; }
+  #notes p strong { color: var(--cream); font-weight: 500; }
+  #notes code { font-family: var(--mono); font-size: 0.8rem; color: var(--gold); background: rgba(201,165,92,0.1); padding: 0.1rem 0.35rem; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <canvas id="atmo"></canvas>
+  <canvas id="thread-back"></canvas>
+  <canvas id="thread-front"></canvas>
+
+  <header>
+    <nav>
+      <div class="pill">
+        <span class="mark">InnoCooks</span>
+        <ul>
+          <li><a class="lnk" href="#">Work</a></li>
+          <li><a class="lnk" href="#">What we build</a></li>
+          <li><a class="lnk" href="#">Process</a></li>
+          <li><a class="lnk" href="#">Studio</a></li>
+        </ul>
+        <a class="cta" href="#">Start a project</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="stage">
+    <p class="label">Systems studio — Cooking innovation</p>
+    <h1 class="word" id="wordmark" aria-label="InnoCooks"></h1>
+    <div class="lede-row">
+      <p class="lede">We build the websites, internal systems and AI automation growing businesses run on — crafted like products, not projects.</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="#">Start a project <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#">See the work</a>
+      </div>
+    </div>
+    <p class="scroll-hint">Scroll</p>
+  </main>
+
+  <div class="switch">
+    <div class="pills">
+      <button data-mode="strand" class="on">Strand</button>
+      <button data-mode="dusk">Dusk</button>
+      <button data-mode="woven">Woven</button>
+    </div>
+    <p id="mode-desc">A single strand of light, hung under its own weight. Push it.</p>
+  </div>
+
+  <button id="notes-btn">Build notes</button>
+  <aside id="notes">
+    <h3>Reading this study</h3>
+    <p>One hero, three directions — flip them with the switcher and move your cursor. Everything is real-time: the Thread is verlet physics, not a video.</p>
+
+    <p class="k">Strand — material</p>
+    <p>The Thread becomes an actual hanging strand of light. Gravity + distance constraints give it weight; it sways on an ambient breeze and recoils from your cursor. A bead travels it like the end of a noodle being pulled.</p>
+
+    <p class="k">Dusk — atmosphere</p>
+    <p>Depth and air. A lantern of light lags behind the cursor, dust drifts up at three parallax depths, and the wordmark's letters separate in space as you move.</p>
+
+    <p class="k">Woven — type</p>
+    <p>The Thread laces over and under the letters of the name, warming each one to gold as it crosses. The brand motif and the wordmark become one object.</p>
+
+    <p class="k">Why not Three.js</p>
+    <p>For one strand + atmosphere, <strong>2D canvas wins</strong>: ~12&nbsp;KB of JS, 60fps on a phone, no WebGL context to lose. Reserve WebGL for the day you want true volumetric light or a 3D product on a project page — not for this.</p>
+
+    <p class="k">Porting into Next</p>
+    <p>Drop <code>thread.js</code> + <code>atmosphere.js</code> logic into a <code>"use client"</code> <code>&lt;HeroCanvas/&gt;</code>, start/stop the rAF in <code>useEffect</code>, and gate it behind <code>prefers-reduced-motion</code> (already wired here). The wordmark stays real DOM text for SEO; canvas sits behind it.</p>
+
+    <p class="k">Guardrails</p>
+    <p>Reduced-motion renders one composed still. No pointer → the lantern drifts on its own. DPR capped at 2. Mobile keeps the strand, drops cursor forces. The hero never gates content behind the animation.</p>
+  </aside>
+
+  <script src="thread.js"></script>
+  <script src="atmosphere.js"></script>
+  <script>
+    // build the wordmark letters before hero.js runs
+    (function () {
+      const word = "INNOCOOKS";
+      const h1 = document.getElementById("wordmark");
+      word.split("").forEach((ch, i) => {
+        const mask = document.createElement("span");
+        mask.className = "mask";
+        const ltr = document.createElement("span");
+        ltr.className = "ltr";
+        ltr.style.setProperty("--i", i);
+        ltr.textContent = ch;
+        mask.appendChild(ltr);
+        h1.appendChild(mask);
+      });
+    })();
+  </script>
+  <script src="hero.js"></script>
+</body>
+</html>
