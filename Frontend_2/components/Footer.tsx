@@ -1,0 +1,81 @@
+import Link from "next/link";
+
+const cols = [
+  {
+    head: "Index",
+    items: [
+      { label: "What we build", href: "/#build" },
+      { label: "Work", href: "/#work" },
+      { label: "Process", href: "/#process" },
+      { label: "Studio", href: "/#studio" },
+    ],
+  },
+  {
+    head: "Direct",
+    items: [
+      { label: "Start a project", href: "/contact/" },
+      { label: "vishnuuu24@gmail.com", href: "mailto:vishnuuu24@gmail.com" },
+    ],
+  },
+];
+
+export default function Footer() {
+  const year = new Date().getFullYear();
+  return (
+    <footer className="relative overflow-hidden border-t border-iron bg-onyx">
+      {/* upper: callsign + nav columns */}
+      <div className="container-x relative z-10 grid grid-cols-1 gap-12 py-16 md:grid-cols-12 md:py-20">
+        <div className="md:col-span-6">
+          <p className="display h-md text-white">
+            INNO<span className="text-kinetic">COOKS</span>
+          </p>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-ash">
+            Websites, internal systems and AI automation for growing businesses.
+            Crafted like products, not projects.
+          </p>
+          <p className="label-mono label-mono--ash mt-8">COOKING INNOVATION // INDIA</p>
+        </div>
+
+        {cols.map((c) => (
+          <nav key={c.head} className="md:col-span-3">
+            <p className="label-mono label-mono--ash mb-5">{c.head}</p>
+            <ul className="flex flex-col gap-3">
+              {c.items.map((it) => (
+                <li key={it.label}>
+                  {it.href.startsWith("mailto:") ? (
+                    <a
+                      href={it.href}
+                      className="font-mono text-xs uppercase tracking-[0.14em] text-white/80 transition-none hover:text-kinetic"
+                    >
+                      {it.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={it.href}
+                      className="font-mono text-xs uppercase tracking-[0.14em] text-white/80 transition-none hover:text-kinetic"
+                    >
+                      {it.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
+      </div>
+
+      {/* the giant watermark */}
+      <div className="pointer-events-none relative flex justify-center overflow-hidden">
+        <span className="display select-none whitespace-nowrap text-[24vw] leading-[0.78] text-white/[0.04]">
+          INNOCOOKS
+        </span>
+      </div>
+
+      {/* baseline */}
+      <div className="container-x relative z-10 flex flex-col gap-2 border-t border-iron py-6 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-ash md:flex-row md:items-center md:justify-between">
+        <span>© {year} InnoCooks — Cooking Innovation</span>
+        <span>Designed &amp; built by InnoCooks — no templates.</span>
+      </div>
+    </footer>
+  );
+}

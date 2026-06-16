@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InnoCooks Systems Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Hanken+Grotesk:wght@400&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#001f24",
+                    "outline-variant": "#56423c",
+                    "surface-container-low": "#1c1b1c",
+                    "inverse-on-surface": "#313031",
+                    "on-primary-fixed-variant": "#802a06",
+                    "on-tertiary-container": "#002f35",
+                    "primary-fixed": "#ffdbcf",
+                    "surface-tint": "#ffb59c",
+                    "outline": "#a58b83",
+                    "on-error": "#690005",
+                    "deep-onyx": "#121112",
+                    "inverse-primary": "#a0401c",
+                    "secondary-fixed-dim": "#ffb4a7",
+                    "error-container": "#93000a",
+                    "on-surface-variant": "#ddc0b8",
+                    "industrial-gray": "#241F21",
+                    "signal-red": "#ff210f",
+                    "surface-bright": "#3a393a",
+                    "primary-fixed-dim": "#ffb59c",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-container": "#5b0200",
+                    "surface-variant": "#363435",
+                    "on-secondary-fixed-variant": "#920500",
+                    "kinetic-orange": "#c45b35",
+                    "on-secondary-fixed": "#400100",
+                    "inverse-surface": "#e6e1e2",
+                    "secondary": "#ffb4a7",
+                    "tertiary-container": "#329eac",
+                    "surface": "#141314",
+                    "primary": "#ffb59c",
+                    "surface-dim": "#141314",
+                    "error": "#ffb4ab",
+                    "surface-container-high": "#2b292b",
+                    "on-tertiary-fixed-variant": "#004f57",
+                    "stark-white": "#FFFFFF",
+                    "primary-container": "#e17149",
+                    "on-secondary": "#680200",
+                    "secondary-fixed": "#ffdad4",
+                    "surface-container-lowest": "#0f0e0f",
+                    "secondary-container": "#ff553f",
+                    "on-primary-fixed": "#390c00",
+                    "on-tertiary": "#00363d",
+                    "tertiary-fixed": "#96f1ff",
+                    "tertiary-fixed-dim": "#72d5e4",
+                    "on-primary-container": "#511500",
+                    "on-background": "#e6e1e2",
+                    "surface-container": "#201f20",
+                    "on-surface": "#e6e1e2",
+                    "background": "#141314",
+                    "surface-container-highest": "#363435",
+                    "tertiary": "#72d5e4",
+                    "on-primary": "#5c1900"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "unit": "4px",
+                    "margin-desktop": "64px",
+                    "gutter": "24px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Bricolage Grotesque"],
+                    "display-2xl": ["Bricolage Grotesque"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "label-mono": ["JetBrains Mono"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-lg": ["Bricolage Grotesque"],
+                    "display-xl": ["Bricolage Grotesque"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["36px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "display-2xl": ["120px", { "lineHeight": "100px", "letterSpacing": "-0.05em", "fontWeight": "800" }],
+                    "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                    "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                    "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                    "headline-lg": ["48px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+                    "display-xl": ["80px", { "lineHeight": "72px", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #121112; /* deep-onyx */
+            color: #FFFFFF; /* stark-white */
+            overflow-x: hidden;
+        }
+        
+        .mask-slide-up {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        
+        .mask-slide-up > div {
+            transform: translateY(100%);
+            opacity: 0;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .delay-100 { animation-delay: 0.1s !important; }
+        .delay-200 { animation-delay: 0.2s !important; }
+        .delay-300 { animation-delay: 0.3s !important; }
+
+        /* Hide scrollbar for horizontal scroll gallery */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Glitch hover effect */
+        .btn-primary:hover {
+            background-color: #c45b35; /* kinetic-orange */
+            color: #121112;
+            transition: all 0ms;
+        }
+    </style>
+</head>
+<body class="bg-deep-onyx text-stark-white min-h-screen flex flex-col antialiased selection:bg-kinetic-orange selection:text-deep-onyx">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface fixed top-0 w-full z-50 border-b border-industrial-gray flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4">
+<div class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-stark-white tracking-tighter">
+            STUDIO_2026
+        </div>
+<nav class="hidden md:flex space-x-8 font-label-mono text-label-mono uppercase">
+<a class="text-stark-white hover:bg-kinetic-orange hover:text-deep-onyx transition-none px-2 py-1" href="#">WORK</a>
+<a class="text-stark-white hover:bg-kinetic-orange hover:text-deep-onyx transition-none px-2 py-1" href="#">STORY</a>
+<a class="text-stark-white hover:bg-kinetic-orange hover:text-deep-onyx transition-none px-2 py-1" href="#">LAB</a>
+<a class="text-stark-white hover:bg-kinetic-orange hover:text-deep-onyx transition-none px-2 py-1" href="#">CONTACT</a>
+</nav>
+<button class="font-label-mono text-label-mono uppercase text-stark-white border border-stark-white px-4 py-2 hover:bg-kinetic-orange hover:text-deep-onyx hover:border-kinetic-orange transition-none flex items-center gap-2">
+            START_PROJECT
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</header>
+<!-- Hero Section -->
+<section class="relative w-full min-h-screen flex items-end pb-24 md:pb-margin-desktop pt-32 px-margin-mobile md:px-margin-desktop border-b border-industrial-gray overflow-hidden">
+<!-- Background Animations -->
+<!-- STITCH_SHADER_START:ANIMATION_6 class="absolute inset-0 w-full h-full z-0 opacity-40" -->
+<div class="absolute inset-0 w-full h-full z-0 opacity-40" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_6" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_6');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+varying vec2 v_texCoord;
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 mouse = u_mouse / u_resolution;
+    
+    // Create a fluid, organic movement pattern
+    float noise = sin(uv.x * 10.0 + u_time * 0.5) * cos(uv.y * 8.0 - u_time * 0.3);
+    noise += sin(uv.y * 15.0 + u_time * 0.8) * 0.5;
+    
+    // InnoCooks Orange base: #c45b35 (0.768, 0.356, 0.207)
+    vec3 color1 = vec3(0.768, 0.356, 0.207); // Brand Orange
+    vec3 color2 = vec3(0.05, 0.05, 0.05);   // Deep Surface
+    vec3 color3 = vec3(0.2, 0.1, 0.05);    // Darkened Ember
+    
+    float intensity = smoothstep(-1.0, 1.0, noise + length(uv - mouse) * 0.5);
+    vec3 finalColor = mix(color2, mix(color3, color1, intensity), intensity * 0.4);
+    
+    // Add subtle scanline or grain effect
+    float grain = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453) * 0.05;
+    finalColor += grain;
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_6 -->
+<div class="absolute inset-0 w-full h-full z-0 flex items-center justify-center opacity-70 mix-blend-screen pointer-events-none">
+<!-- STITCH_THREEJS_START:ANIMATION_7 class="w-[600px] h-[600px]" -->
+<div class="w-[600px] h-[600px]" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_7" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_7');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+// Create a premium "2026" kinetic sculpture
+const group = new THREE.Group();
+scene.add(group);
+
+const material = new THREE.MeshNormalMaterial({ 
+    wireframe: false,
+    flatShading: true
+});
+
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const count = 40;
+
+for (let i = 0; i < count; i++) {
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(
+        (Math.random() - 0.5) * 6,
+        (Math.random() - 0.5) * 6,
+        (Math.random() - 0.5) * 6
+    );
+    mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+    const scale = Math.random() * 0.5 + 0.1;
+    mesh.scale.set(scale, scale, scale);
+    mesh.userData.orbitSpeed = Math.random() * 0.01 + 0.005;
+    mesh.userData.rotationSpeed = Math.random() * 0.02;
+    group.add(mesh);
+}
+
+camera.position.z = 8;
+
+let mouseX = 0;
+let mouseY = 0;
+
+window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth) - 0.5;
+    mouseY = (e.clientY / window.innerHeight) - 0.5;
+});
+
+window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+});
+
+function animate() {
+    requestAnimationFrame(animate);
+    
+    group.rotation.y += 0.002;
+    group.rotation.x += 0.001;
+    
+    // Subtle mouse tracking
+    group.position.x += (mouseX * 2 - group.position.x) * 0.05;
+    group.position.y += (-mouseY * 2 - group.position.y) * 0.05;
+    
+    group.children.forEach(child => {
+        child.rotation.x += child.userData.rotationSpeed;
+        child.rotation.y += child.userData.rotationSpeed;
+    });
+
+    renderer.render(scene, camera);
+}
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_7 -->
+</div>
+<!-- Hero Content -->
+<div class="relative z-10 w-full grid grid-cols-4 md:grid-cols-12 gap-gutter">
+<div class="col-span-4 md:col-span-12 mask-slide-up">
+<h1 class="font-display-2xl text-headline-lg-mobile md:text-display-2xl uppercase tracking-tighter max-w-[1200px]">
+                    WE BUILD THE WEBSITES, SYSTEMS &amp; AI YOUR BUSINESS RUNS ON.
+                </h1>
+</div>
+<div class="col-span-4 md:col-span-6 mt-8 mask-slide-up delay-100 flex flex-col items-start gap-8">
+<p class="font-body-lg text-body-lg text-stark-white/80 max-w-md">
+                    Crafted like products, not projects.
+                </p>
+<button class="btn-primary bg-stark-white text-deep-onyx font-label-mono text-label-mono uppercase px-8 py-4 transition-none flex items-center gap-2">
+                    START_PROJECT
+                    <span class="material-symbols-outlined text-sm">terminal</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Core Content / Statement -->
+<section class="w-full px-margin-mobile md:px-margin-desktop py-24 md:py-48 border-b border-industrial-gray">
+<div class="grid grid-cols-4 md:grid-cols-12 gap-gutter">
+<div class="col-span-4 md:col-span-4 flex flex-col justify-between">
+<span class="font-label-mono text-label-mono text-kinetic-orange uppercase mb-8 md:mb-0">[ MISSION_CTRL ]</span>
+</div>
+<div class="col-span-4 md:col-span-8">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg tracking-tighter">
+                    We don't just write code. We architect digital infrastructure designed for scale, resilience, and operational clarity.
+                </h2>
+</div>
+</div>
+</section>
+<!-- Featured Work Gallery -->
+<section class="w-full border-b border-industrial-gray py-24 md:py-32 overflow-hidden flex flex-col gap-12">
+<div class="px-margin-mobile md:px-margin-desktop flex justify-between items-end">
+<h2 class="font-display-xl text-headline-lg-mobile md:text-display-xl tracking-tighter uppercase">ARCHIVE</h2>
+<span class="font-label-mono text-label-mono uppercase text-stark-white/60 hidden md:block">DRAG TO EXPLORE </span>
+</div>
+<div class="w-full flex overflow-x-auto no-scrollbar px-margin-mobile md:px-margin-desktop gap-gutter pb-8 snap-x">
+<!-- Card 1 -->
+<div class="min-w-[85vw] md:min-w-[600px] border border-industrial-gray p-8 flex flex-col justify-between h-[500px] group relative snap-center cursor-pointer hover:border-kinetic-orange transition-colors duration-0 bg-surface-container-lowest">
+<div class="absolute inset-0 w-full h-full z-0 overflow-hidden opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+<img alt="Abstract representation of Christalin Mirrors." class="w-full h-full object-cover grayscale mix-blend-screen" data-alt="A highly precise, reflective digital installation featuring shattered glass and stark, sharp angular mirrors suspended in a dark void. Illumination comes from ultra-bright, sterile white kinetic beams creating an architectural brutalist aesthetic. The mood is cold, high-end, and deeply atmospheric, accentuating the deep black and absolute white contrast characteristic of a 2026 industrial digital system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-2TESEJocnTBTV7JfPcj9i3poFGDoGKCpOANnHNU-SCyOWdxTA-bu_dPLE7jE3slqcLUv78eXx-3Q7qYdPDJCIOb2o54s46bBsiEeXBkuROojz4Jz3ml99t3cj0Vj6PGL2b1erPhrvSY9FmegOF2gRi8lgnA5upXpXsdv22PwfoFSnmZAyNcdniiJ1OsTGTq6YxNPEPedGljpBmTL_jOKdqhwF1uaw1hnJjkxh6CMOn0giFFLR7z3IGDcYP4pdK1fOsyjg_rlayY7"/>
+</div>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg relative z-10 uppercase tracking-tighter group-hover:text-kinetic-orange transition-none">Christalin Mirrors</h3>
+<div class="flex justify-between items-end relative z-10 font-label-mono text-label-mono text-stark-white/60 uppercase">
+<span>E-COMMERCE // SYS</span>
+<span>2025.Q3</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[85vw] md:min-w-[600px] border border-industrial-gray p-8 flex flex-col justify-between h-[500px] group relative snap-center cursor-pointer hover:border-kinetic-orange transition-colors duration-0 bg-surface-container-lowest">
+<div class="absolute inset-0 w-full h-full z-0 overflow-hidden opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+<img alt="The Edits Club interface." class="w-full h-full object-cover grayscale mix-blend-screen" data-alt="A macro shot of a sleek, heavy server rack integrated with glowing orange fiber optic cables. The lighting highlights rigid geometric structures and technical precision in a completely pitch-black server room environment. The stark contrast between the deep onyx metallic surfaces and the sharp, piercing kinetic orange lights exemplifies a brutalist, raw technological ecosystem built for operational clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtO0ZcZhVtmp4pZ1dAdNql-r94v0r8N_57ewI2a--3-U5k1vbjXJF5PKGj1Qzf6FIGcIckr_ossrUiyfrnhT1AwHd1dRhrVWUsD8pxo5qLLYrScHb9Z9b_7mm-mpLECTYIiYJWJRKyAoluVD0aH04uP3uIWLMf4uXOLpX5THHQZhqKSY1trGoexzE0Gjl0HOYZxDKyTB5ux1GOzChaC9fucUw7NW0eWqqwvLMXyIo6SxDu66MWS-7ckpDzWvGpRLAD950Xw7JKpR00"/>
+</div>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg relative z-10 uppercase tracking-tighter group-hover:text-kinetic-orange transition-none">The Edits Club</h3>
+<div class="flex justify-between items-end relative z-10 font-label-mono text-label-mono text-stark-white/60 uppercase">
+<span>MEDIA ARCHITECTURE</span>
+<span>2025.Q4</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[85vw] md:min-w-[600px] border border-industrial-gray p-8 flex flex-col justify-between h-[500px] group relative snap-center cursor-pointer hover:border-kinetic-orange transition-colors duration-0 bg-surface-container-lowest">
+<div class="absolute inset-0 w-full h-full z-0 overflow-hidden opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+<img alt="Hacksters codebase visualization." class="w-full h-full object-cover grayscale mix-blend-screen" data-alt="Monochromatic matrix-like data streams flowing vertically down a massive digital terminal display in a brutalist industrial facility. The raw digital data fragments illuminate the cold concrete environment with blinding white text over an abyssal black background. A singular, bold orange cursor pulse sits at the center, representing cutting-edge AI computation and pure structural code execution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwsGdb6jTlUP9vJGqRzVQhfoxfWOEYn69fm4P5muDQ1vkJkeUV1s8ITFZxQsMIfsxwLceF24cpDiPksg8yTNJSFDfHb3DyM6Vz7rgWGEOcW6USO6dVPPie2ML1uLp1IYKoUdkPPitIrLumkmwrYnZcJ6lkas4tkvbpyQse6Sf3JYehQaLXWbWv6uiLvlJrZNR7jL5VB6_oOlJ0Ic4IvSZq3e6O7qhPtBpd8XFXjN9Q2ENVteBac4IBX1eFriY8Y7maiiQYeKal_zEW"/>
+</div>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg relative z-10 uppercase tracking-tighter group-hover:text-kinetic-orange transition-none">Hacksters</h3>
+<div class="flex justify-between items-end relative z-10 font-label-mono text-label-mono text-stark-white/60 uppercase">
+<span>AI PLATFORM // CORE</span>
+<span>2026.Q1</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Workflow Steps -->
+<section class="w-full px-margin-mobile md:px-margin-desktop py-24 md:py-32">
+<h2 class="font-label-mono text-label-mono text-kinetic-orange uppercase mb-16">[ PROTOCOL_SEQUENCE ]</h2>
+<div class="flex flex-col w-full border-t border-industrial-gray">
+<div class="group border-b border-industrial-gray py-8 md:py-12 flex flex-col md:flex-row items-start md:items-center gap-8 cursor-pointer hover:bg-industrial-gray/50 transition-none pl-4 pr-4 md:pl-8">
+<span class="font-label-mono text-label-mono text-stark-white/50 w-24 group-hover:text-kinetic-orange transition-none">01</span>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-150">Understand</h3>
+</div>
+<div class="group border-b border-industrial-gray py-8 md:py-12 flex flex-col md:flex-row items-start md:items-center gap-8 cursor-pointer hover:bg-industrial-gray/50 transition-none pl-4 pr-4 md:pl-8">
+<span class="font-label-mono text-label-mono text-stark-white/50 w-24 group-hover:text-kinetic-orange transition-none">02</span>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-150">Design</h3>
+</div>
+<div class="group border-b border-industrial-gray py-8 md:py-12 flex flex-col md:flex-row items-start md:items-center gap-8 cursor-pointer hover:bg-industrial-gray/50 transition-none pl-4 pr-4 md:pl-8">
+<span class="font-label-mono text-label-mono text-stark-white/50 w-24 group-hover:text-kinetic-orange transition-none">03</span>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-150">Build</h3>
+</div>
+<div class="group border-b border-industrial-gray py-8 md:py-12 flex flex-col md:flex-row items-start md:items-center gap-8 cursor-pointer hover:bg-industrial-gray/50 transition-none pl-4 pr-4 md:pl-8">
+<span class="font-label-mono text-label-mono text-stark-white/50 w-24 group-hover:text-kinetic-orange transition-none">04</span>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-150">Serve &amp; Maintain</h3>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-deep-onyx dark:bg-deep-onyx w-full min-h-[400px] border-t border-industrial-gray grid grid-cols-4 md:grid-cols-12 gap-gutter px-margin-mobile md:px-margin-desktop py-16 mt-auto relative overflow-hidden">
+<!-- Large Background Brand Text -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
+<span class="font-display-xl text-[150px] md:text-[250px] text-stark-white opacity-5 whitespace-nowrap select-none font-extrabold tracking-tighter leading-none pt-12">
+                INNOCOOKS
+            </span>
+</div>
+<div class="col-span-4 md:col-span-6 flex flex-col justify-between relative z-10">
+<div class="font-display-xl text-headline-lg-mobile md:text-display-xl text-stark-white opacity-10 tracking-tighter">
+                PRECISION<br/>SYSTEMS
+            </div>
+<div class="font-label-mono text-label-mono text-stark-white/60 mt-16 md:mt-0">
+                ©2026 PRECISION_SYSTEMS. ALL_RIGHTS_RESERVED.
+            </div>
+</div>
+<div class="col-span-4 md:col-span-6 flex flex-col justify-end relative z-10 mt-12 md:mt-0">
+<nav class="flex flex-col gap-4 font-label-mono text-label-mono items-start md:items-end w-full">
+<a class="text-stark-white opacity-60 hover:text-kinetic-orange hover:opacity-100 hover:pl-2 md:hover:pl-0 md:hover:-translate-x-2 transition-all duration-150 uppercase" href="#">INDEX</a>
+<a class="text-stark-white opacity-60 hover:text-kinetic-orange hover:opacity-100 hover:pl-2 md:hover:pl-0 md:hover:-translate-x-2 transition-all duration-150 uppercase" href="#">ARCHIVE</a>
+<a class="text-stark-white opacity-60 hover:text-kinetic-orange hover:opacity-100 hover:pl-2 md:hover:pl-0 md:hover:-translate-x-2 transition-all duration-150 uppercase" href="#">PROCESS</a>
+<a class="text-stark-white opacity-60 hover:text-kinetic-orange hover:opacity-100 hover:pl-2 md:hover:pl-0 md:hover:-translate-x-2 transition-all duration-150 uppercase" href="#">CAREERS</a>
+<a class="text-stark-white opacity-60 hover:text-kinetic-orange hover:opacity-100 hover:pl-2 md:hover:pl-0 md:hover:-translate-x-2 transition-all duration-150 uppercase" href="#">LEGAL</a>
+</nav>
+</div>
+</footer>
+<script>
+        // Simple script to trigger mechanical shutter slide-in on scroll if needed for the footer or other sections
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.mask-slide-up').forEach((el) => {
+            // Re-triggering animation logic could go here
+        });
+    </script>
+</body></html>
