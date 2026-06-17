@@ -23,7 +23,7 @@ export default function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <nav className="flex items-center justify-between border-b border-iron bg-onyx/80 px-5 py-3 backdrop-blur-md md:px-16 md:py-4">
+      <nav className="nav-safe flex items-center justify-between border-b border-iron bg-onyx/80 backdrop-blur-md">
         <Link
           href="/"
           onClick={() => setOpen(false)}
@@ -55,7 +55,8 @@ export default function Nav() {
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="flex flex-col gap-1.5 p-2 md:hidden"
+          aria-controls="mobile-menu"
+          className="-mr-2 flex flex-col gap-1.5 p-2 md:hidden"
         >
           <span
             className={`block h-px w-7 bg-white transition-transform duration-200 ${
@@ -70,8 +71,11 @@ export default function Nav() {
         </button>
       </nav>
 
-      {/* full-screen overlay menu */}
+      {/* full-screen overlay menu — `inert` when closed so its links are fully
+          removed from the tab order and the accessibility tree */}
       <div
+        id="mobile-menu"
+        inert={!open}
         className={`fixed inset-0 z-40 flex flex-col bg-onyx transition-opacity duration-300 md:hidden ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
@@ -90,7 +94,7 @@ export default function Nav() {
             </li>
           ))}
         </ul>
-        <div className="px-5 pb-10">
+        <div className="px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
           <Link
             href="/contact/"
             onClick={() => setOpen(false)}

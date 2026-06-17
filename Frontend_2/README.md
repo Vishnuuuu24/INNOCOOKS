@@ -32,10 +32,37 @@ npm run dev      # http://localhost:3000
 npm run build    # static export → ./out
 ```
 
+## Connecting the contact form
+The "Get in touch" form works with **zero backend** out of the box — it composes
+a structured `mailto:`. To send enquiries to a real backend or email service,
+set one env var (see `.env.example`):
+
+```bash
+# .env.local
+NEXT_PUBLIC_CONTACT_ENDPOINT=https://api.innocooks.com/contact   # or Formspree / Web3Forms / Getform…
+NEXT_PUBLIC_CONTACT_ACCESS_KEY=                                  # optional (Web3Forms etc.)
+```
+
+The integration lives in one file — [`lib/contact.ts`](lib/contact.ts). When the
+endpoint is set the form POSTs JSON `{ name, email, business, budget, message,
+source, submitted_at }`, shows inline success/error states, drops spam via a
+honeypot, times out after 15s, and still works with JS disabled (native POST).
+Keep real secrets (SMTP / Resend / SendGrid keys) **on your server**, never in a
+`NEXT_PUBLIC_` var.
+
+## Deploy & security headers
+Static export has no server, so security headers ship as host config:
+- **Netlify / Cloudflare Pages** → [`public/_headers`](public/_headers) (copied into `out/`)
+- **Vercel** → [`vercel.json`](vercel.json)
+
+Both set CSP, HSTS, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`,
+`Permissions-Policy`, COOP, and long-cache rules for hashed assets. For Apache/Nginx,
+translate the same set.
+
 ## Structure
 ```
 app/            layout, globals.css, page, contact/, work/christalin-mirrors/
 components/     Nav, Footer, Frame, Preloader, SmoothScroll, Reveal, Magnetic, HeroCanvas
-components/sections/  Hero, Manifesto, Marquee, Work, Process, Studio, FinalCTA
+components/sections/  Hero, Manifesto, Work, Process, Studio, FinalCTA
 lib/gsap.ts
 ```

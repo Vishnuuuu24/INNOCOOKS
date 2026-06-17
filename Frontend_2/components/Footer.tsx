@@ -72,7 +72,7 @@ export default function Footer() {
       </div>
 
       {/* baseline */}
-      <div className="container-x relative z-10 flex flex-col gap-2 border-t border-iron py-6 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-ash md:flex-row md:items-center md:justify-between">
+      <div className="container-x relative z-10 flex flex-col gap-2 border-t border-iron pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] font-mono text-[0.68rem] uppercase tracking-[0.14em] text-ash md:flex-row md:items-center md:justify-between">
         <span>© {year} InnoCooks · Cooking Innovation</span>
         <span>Designed &amp; built by InnoCooks. No templates.</span>
       </div>

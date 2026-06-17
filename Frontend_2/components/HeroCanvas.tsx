@@ -55,10 +55,41 @@ export default function HeroCanvas() {
     if (reduced) return;
 
     const cleanups: Array<() => void> = [];
+    // loops only run while the hero is on-screen AND the tab is visible — this
+    // stops a full-screen fragment shader burning the GPU/battery (notably on
+    // mobile) once you've scrolled past or switched tabs.
+    let heroVisible = true;
+    const resumers: Array<() => void> = [];
+    const shouldRun = () => heroVisible && !document.hidden;
+
+    // resume any paused loop when the tab returns or the hero re-enters view
+    const onVisibility = () => resumers.forEach((r) => r());
+    document.addEventListener("visibilitychange", onVisibility);
+    let io: IntersectionObserver | null = null;
+    if (shaderRef.current && "IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        ([entry]) => {
+          heroVisible = entry.isIntersecting;
+          if (heroVisible) resumers.forEach((r) => r());
+        },
+        { threshold: 0 }
+      );
+      io.observe(shaderRef.current);
+    }
+    cleanups.push(() => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      io?.disconnect();
+    });
 
     /* ── Layer 1 — shader ─────────────────────────────────────── */
     const canvas = shaderRef.current;
-    const gl = canvas?.getContext("webgl") as WebGLRenderingContext | null;
+    const gl = canvas?.getContext("webgl", {
+      alpha: false,
+      antialias: false,
+      depth: false,
+      stencil: false,
+      powerPreference: "low-power",
+    }) as WebGLRenderingContext | null;
     if (canvas && gl) {
       const mouse = { x: 0, y: 0 };
       const sync = () => {
@@ -74,52 +105,80 @@ export default function HeroCanvas() {
       mouse.y = canvas.height / 2;
 
       const compile = (type: number, src: string) => {
-        const s = gl.createShader(type)!;
+        const s = gl.createShader(type);
+        if (!s) return null;
         gl.shaderSource(s, src);
         gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+          gl.deleteShader(s);
+          return null;
+        }
         return s;
       };
-      const prog = gl.createProgram()!;
-      gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
-      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
-      gl.linkProgram(prog);
-      gl.useProgram(prog);
 
-      const buf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-      const pos = gl.getAttribLocation(prog, "a_position");
-      gl.enableVertexAttribArray(pos);
-      gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+      // if any stage fails to compile/link, bail quietly — the CSS ember-field
+      // behind the canvas carries the hero on that driver
+      const vs = compile(gl.VERTEX_SHADER, VERT);
+      const fs = compile(gl.FRAGMENT_SHADER, FRAG);
+      const prog = gl.createProgram();
+      if (vs && fs && prog) {
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+          gl.deleteProgram(prog);
+        } else {
+          gl.useProgram(prog);
 
-      const uTime = gl.getUniformLocation(prog, "u_time");
-      const uRes = gl.getUniformLocation(prog, "u_resolution");
-      const uMouse = gl.getUniformLocation(prog, "u_mouse");
+          const buf = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+          const pos = gl.getAttribLocation(prog, "a_position");
+          gl.enableVertexAttribArray(pos);
+          gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
 
-      const onMove = (e: MouseEvent) => {
-        const r = canvas.getBoundingClientRect();
-        if (!r.width || !r.height) return;
-        mouse.x = ((e.clientX - r.left) / r.width) * canvas.width;
-        mouse.y = (1 - (e.clientY - r.top) / r.height) * canvas.height;
-      };
-      window.addEventListener("mousemove", onMove);
+          const uTime = gl.getUniformLocation(prog, "u_time");
+          const uRes = gl.getUniformLocation(prog, "u_resolution");
+          const uMouse = gl.getUniformLocation(prog, "u_mouse");
 
-      let raf = 0;
-      const render = (t: number) => {
-        sync();
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        gl.uniform1f(uTime, t * 0.001);
-        gl.uniform2f(uRes, canvas.width, canvas.height);
-        gl.uniform2f(uMouse, mouse.x, mouse.y);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        raf = requestAnimationFrame(render);
-      };
-      raf = requestAnimationFrame(render);
+          const onMove = (e: MouseEvent) => {
+            const r = canvas.getBoundingClientRect();
+            if (!r.width || !r.height) return;
+            mouse.x = ((e.clientX - r.left) / r.width) * canvas.width;
+            mouse.y = (1 - (e.clientY - r.top) / r.height) * canvas.height;
+          };
+          window.addEventListener("mousemove", onMove);
 
-      cleanups.push(() => {
-        cancelAnimationFrame(raf);
-        window.removeEventListener("mousemove", onMove);
-      });
+          let raf = 0;
+          let looping = false;
+          const render = (t: number) => {
+            if (!shouldRun()) {
+              looping = false; // pause; resumed by observer / visibilitychange
+              return;
+            }
+            sync();
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.uniform1f(uTime, t * 0.001);
+            gl.uniform2f(uRes, canvas.width, canvas.height);
+            gl.uniform2f(uMouse, mouse.x, mouse.y);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            raf = requestAnimationFrame(render);
+          };
+          const startShader = () => {
+            if (!looping && shouldRun()) {
+              looping = true;
+              raf = requestAnimationFrame(render);
+            }
+          };
+          startShader();
+          resumers.push(startShader);
+
+          cleanups.push(() => {
+            cancelAnimationFrame(raf);
+            window.removeEventListener("mousemove", onMove);
+          });
+        }
+      }
     }
 
     /* ── Layer 2 — Three.js sculpture (desktop pointers only) ─── */
@@ -193,7 +252,12 @@ export default function HeroCanvas() {
           window.addEventListener("resize", onResize);
 
           let raf = 0;
+          let looping = false;
           const animate = () => {
+            if (!shouldRun()) {
+              looping = false; // pause when hero is off-screen / tab hidden
+              return;
+            }
             group.rotation.y += 0.002;
             group.rotation.x += 0.001;
             group.position.x += (mx * 2 - group.position.x) * 0.05;
@@ -205,7 +269,14 @@ export default function HeroCanvas() {
             renderer.render(scene, camera);
             raf = requestAnimationFrame(animate);
           };
-          animate();
+          const startSculpt = () => {
+            if (!looping && shouldRun()) {
+              looping = true;
+              raf = requestAnimationFrame(animate);
+            }
+          };
+          startSculpt();
+          resumers.push(startSculpt);
 
           cleanups.push(() => {
             cancelAnimationFrame(raf);

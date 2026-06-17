@@ -34,13 +34,6 @@
   /* ── motion ───────────────────────────────────────────────── */
   --ease-mech: cubic-bezier(0.16, 1, 0.3, 1); /* mechanical settle */
   --ease-snap: cubic-bezier(0.7, 0, 0.2, 1); /* shutter snap */
-
-  /* ── marquee ──────────────────────────────────────────────── */
-  --animate-ticker: ticker 38s linear infinite;
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -53,7 +46,6 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .animate-ticker { animation: none; }
 }
 
 body {
@@ -64,6 +56,10 @@ body {
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
   overflow-x: clip;
+  /* stop iOS inflating text in landscape, and kill the grey tap flash */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
@@ -74,6 +70,39 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-kinetic);
   outline-offset: 2px;
+}
+
+/* keyboard skip link — off-screen until focused, then snaps into view */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  margin: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--color-kinetic);
+  color: var(--color-onyx);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transform: translateY(-160%);
+  transition: transform 0.18s var(--ease-mech);
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* `svh` is the correct full-height unit on mobile (it accounts for the address
+   bar); on the rare engine without it, fall back to `vh` so 100%/90% height
+   sections never collapse to zero. */
+@supports not (height: 1svh) {
+  .min-h-\[100svh\] {
+    min-height: 100vh;
+  }
+  .min-h-\[90svh\] {
+    min-height: 90vh;
+  }
 }
 
 /* ── custom cursor ─────────────────────────────────────────────
@@ -123,10 +152,33 @@ body::after {
     width: 100%;
     max-width: 90rem; /* 1440px */
     margin-inline: auto;
-    padding-inline: 1.25rem;
+    /* honour notch/rounded-corner safe areas (viewport-fit: cover) without
+       shrinking the gutter on normal screens, where the inset resolves to 0 */
+    padding-inline: max(1.25rem, env(safe-area-inset-left))
+      max(1.25rem, env(safe-area-inset-right));
   }
   @media (min-width: 768px) {
-    .container-x { padding-inline: 4rem; }
+    .container-x {
+      padding-inline: max(4rem, env(safe-area-inset-left))
+        max(4rem, env(safe-area-inset-right));
+    }
+  }
+
+  /* fixed nav bar — same visual padding as before, but the floors give way to
+     the notch/rounded-corner safe areas when they're larger (viewport-fit:cover) */
+  .nav-safe {
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+    padding-bottom: 0.75rem;
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+  }
+  @media (min-width: 768px) {
+    .nav-safe {
+      padding-top: max(1rem, env(safe-area-inset-top));
+      padding-bottom: 1rem;
+      padding-left: max(4rem, env(safe-area-inset-left));
+      padding-right: max(4rem, env(safe-area-inset-right));
+    }
   }
 
   /* technical micro-label — the "machine-read" voice */

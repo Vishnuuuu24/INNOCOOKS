@@ -36,6 +36,8 @@ export default function Work() {
                     <img
                       src={p.image}
                       alt={p.title}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover grayscale transition-[filter,transform] duration-500 group-hover:scale-[1.03] group-hover:grayscale-0"
                     />
                   ) : (

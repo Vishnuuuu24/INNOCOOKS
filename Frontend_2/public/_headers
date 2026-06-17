@@ -1,0 +1,31 @@
+# Security + caching headers for Netlify and Cloudflare Pages.
+# This file is copied verbatim into the static export (out/_headers) at build.
+# Vercel users: see vercel.json instead. Apache/Nginx: translate the same set.
+#
+# CSP note: 'unsafe-inline' is required because a static export can't emit a
+# per-request nonce, and both the JSON-LD block and GSAP's inline element
+# styles are inline. The site has no auth, cookies or user-generated content,
+# so the residual XSS surface is minimal. Tighten connect-src to your exact
+# contact endpoint host once it's known.
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https: mailto:; object-src 'none'; upgrade-insecure-requests
+
+# the OG card is emitted without a file extension — pin its type so static
+# hosts serve it as a real image to social / link-preview scrapers
+/opengraph-image
+  Content-Type: image/png
+  Cache-Control: public, max-age=86400
+
+# content-hashed build assets — safe to cache forever
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

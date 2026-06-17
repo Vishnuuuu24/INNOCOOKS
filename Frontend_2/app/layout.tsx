@@ -33,6 +33,12 @@ const instrument = Instrument_Serif({
 });
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // extend the onyx void edge-to-edge under notches/rounded corners; the nav
+  // and container add env(safe-area-inset-*) padding so nothing is occluded
+  viewportFit: "cover",
+  colorScheme: "dark",
   themeColor: "#121112",
 };
 
@@ -50,7 +56,23 @@ export const metadata: Metadata = {
       "Websites, internal management systems and AI automation for small and medium businesses.",
     type: "website",
     locale: "en_IN",
+    siteName: "InnoCooks",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "InnoCooks · Systems Studio",
+    description:
+      "Websites, internal management systems and AI automation for small and medium businesses.",
+  },
+  keywords: [
+    "InnoCooks",
+    "systems studio",
+    "web development India",
+    "internal management systems",
+    "AI automation",
+    "custom software",
+  ],
+  alternates: { canonical: "/" },
 };
 
 const jsonLd = {
@@ -74,9 +96,15 @@ export default function RootLayout({
       className={`dark ${bricolage.variable} ${hanken.variable} ${jetbrains.variable} ${instrument.variable}`}
     >
       <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          // escape "<" so this static JSON can never break out of the <script>
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
         />
         <Preloader />
         <SmoothScroll />
@@ -84,7 +112,9 @@ export default function RootLayout({
         <Frame />
         <ScrollSpy />
         <Nav />
-        <main>{children}</main>
+        <main id="main" tabIndex={-1}>
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

@@ -80,7 +80,13 @@ export default async function ProjectPage({
             <div className="relative aspect-video overflow-hidden bg-onyx-raise">
               {p.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.image} alt={`${p.title} website`} className="h-full w-full object-cover" />
+                <img
+                  src={p.image}
+                  alt={`${p.title} website`}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                   <span className="display h-lg text-white/85">{p.title}</span>
