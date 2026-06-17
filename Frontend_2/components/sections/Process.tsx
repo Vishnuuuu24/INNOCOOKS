@@ -3,15 +3,15 @@ import Reveal from "@/components/Reveal";
 const steps = [
   {
     name: "Understand",
-    copy: "We sit with you and map how your business actually works — before any talk of technology.",
+    copy: "We sit with you and map how your business actually works, before any talk of technology.",
   },
   {
     name: "Design",
-    copy: "You see exactly what we'll build — pages, screens and flows — before a line of code is written.",
+    copy: "You see exactly what we'll build (pages, screens and flows) before a line of code is written.",
   },
   {
     name: "Build",
-    copy: "Production-grade work in focused sprints, with progress you can click — not promises.",
+    copy: "Production-grade work in focused sprints, with progress you can click, not promises.",
   },
   {
     name: "Serve & maintain",
@@ -54,7 +54,7 @@ export default function Process() {
         <Reveal delay={0.05}>
           <p className="mt-12 max-w-xl border-l-2 border-kinetic pl-6 text-base leading-relaxed text-ash">
             Every build includes a year of care. We don&apos;t hand over a project and
-            disappear — we maintain the systems we serve.
+            disappear. We maintain the systems we serve.
           </p>
         </Reveal>
       </div>

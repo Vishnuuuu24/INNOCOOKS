@@ -39,13 +39,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://innocooks.com"),
   title: {
-    default: "InnoCooks — Websites, Internal Systems & AI Automation",
-    template: "%s — InnoCooks",
+    default: "InnoCooks · Websites, Internal Systems & AI Automation",
+    template: "%s · InnoCooks",
   },
   description:
     "InnoCooks is a systems studio building the websites, internal tools and AI automation growing businesses run on. Crafted like products, not projects.",
   openGraph: {
-    title: "InnoCooks — Systems Studio",
+    title: "InnoCooks · Systems Studio",
     description:
       "Websites, internal management systems and AI automation for small and medium businesses.",
     type: "website",

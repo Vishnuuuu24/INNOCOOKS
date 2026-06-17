@@ -66,7 +66,7 @@ export default function Hero() {
 
         <div className="mt-10 flex flex-col gap-8 md:mt-14 md:flex-row md:items-end md:justify-between">
           <p className="hero-up max-w-md text-lg leading-relaxed text-ash">
-            Crafted like products, not projects — and maintained long after launch,
+            Crafted like products, not projects. Maintained long after launch,
             so they keep earning their keep.
           </p>
           <div className="hero-up flex flex-wrap gap-3">

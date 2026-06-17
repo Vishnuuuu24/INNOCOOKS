@@ -13,7 +13,7 @@ export default function ContactForm() {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const subject = encodeURIComponent(
-      `Project enquiry — ${data.get("business") || data.get("name")}`
+      `Project enquiry: ${data.get("business") || data.get("name")}`
     );
     const body = encodeURIComponent(
       [
@@ -71,7 +71,7 @@ export default function ContactForm() {
           name="message"
           rows={5}
           className={field}
-          placeholder="In your own words — what's slowing you down, or what do you want to exist?"
+          placeholder="In your own words: what's slowing you down, or what do you want to exist?"
         />
       </label>
 
@@ -79,7 +79,7 @@ export default function ContactForm() {
         Send it over <span aria-hidden="true">→</span>
       </button>
       <p className="label-mono label-mono--ash text-center">
-        Opens your email app — nothing is stored here.
+        Opens your email app. Nothing is stored here.
       </p>
     </form>
   );

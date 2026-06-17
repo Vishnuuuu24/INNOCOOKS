@@ -24,7 +24,7 @@ export default function Studio() {
             <Reveal delay={0.1}>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-ash">
                 We&apos;re a five-person studio. One conversation with us reaches everyone who
-                designs, builds and maintains your system — no account managers, no hand-offs,
+                designs, builds and maintains your system. No account managers, no hand-offs,
                 no telephone game. We take on few projects and finish every one properly.
               </p>
             </Reveal>

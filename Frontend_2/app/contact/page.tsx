@@ -4,7 +4,7 @@ import ContactForm from "@/components/ContactForm";
 export const metadata: Metadata = {
   title: "Start a project",
   description:
-    "Tell InnoCooks what's slowing your business down — we reply within 24 hours with how we'd approach it.",
+    "Tell InnoCooks what's slowing your business down. We reply within 24 hours with how we'd approach it.",
 };
 
 export default function ContactPage() {
@@ -17,7 +17,7 @@ export default function ContactPage() {
             Tell us what you&apos;re trying to <em className="em">build</em>.
           </h1>
           <p className="mt-7 max-w-md text-lg leading-relaxed text-ash">
-            A website, an internal system, an AI workflow — or just a problem you can&apos;t
+            A website, an internal system, an AI workflow, or just a problem you can&apos;t
             name yet. Describe it in your own words; we&apos;ll reply within 24 hours with
             how we&apos;d approach it.
           </p>
@@ -31,7 +31,7 @@ export default function ContactPage() {
                 → vishnuuu24@gmail.com
               </a>
             </li>
-            <li className="label-mono label-mono--ash">Based in India — working everywhere</li>
+            <li className="label-mono label-mono--ash">Based in India · working everywhere</li>
             <li className="label-mono label-mono--ash">Reply within 24 hours</li>
           </ul>
         </div>

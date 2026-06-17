@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 
 /** A fixed structural frame over the whole site: a kinetic scroll-progress
- *  rail, corner registration ticks and rotated edge labels — the "instrument
- *  panel" that makes the page feel like a precise machine. Purely decorative,
- *  pointer-events: none, and invisible to assistive tech. */
+ *  rail and corner registration ticks, the "instrument panel" that makes the
+ *  page feel like a precise machine. Purely decorative, pointer-events: none,
+ *  and invisible to assistive tech. */
 export default function Frame() {
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -50,11 +50,6 @@ export default function Frame() {
       <span className={`${tick} right-2 top-2 border-r border-t`} />
       <span className={`${tick} bottom-2 left-2 border-b border-l`} />
       <span className={`${tick} bottom-2 right-2 border-b border-r`} />
-
-      {/* rotated edge label — left side (right edge belongs to the scroll-spy) */}
-      <span className="label-mono label-mono--ash pointer-events-none fixed left-[-0.5rem] top-1/2 z-40 hidden -translate-y-1/2 -rotate-90 whitespace-nowrap opacity-70 xl:block">
-        INNOCOOKS — SYSTEMS STUDIO
-      </span>
     </div>
   );
 }

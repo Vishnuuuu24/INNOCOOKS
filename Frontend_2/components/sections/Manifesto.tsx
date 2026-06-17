@@ -52,41 +52,44 @@ export default function Manifesto() {
       id="build"
       className="relative scroll-mt-24 border-b border-iron bg-onyx"
     >
-      <div className="container-x grid grid-cols-1 gap-10 py-24 md:grid-cols-12 md:py-40">
-        <div className="md:col-span-4">
-          <p className="label-mono">[ 01 / WHAT_WE_BUILD ]</p>
-        </div>
+      <div className="container-x py-24 md:py-40">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+          <div className="md:col-span-4">
+            <p className="label-mono">[ 01 / WHAT_WE_BUILD ]</p>
+          </div>
 
-        <div className="md:col-span-8">
-          <p
-            ref={stmt}
-            className="display max-w-[20ch] text-[clamp(1.7rem,3.6vw,3rem)] leading-[1.08] tracking-tight text-white"
-            style={{ textTransform: "none" }}
-          >
-            {WORDS.map(({ w, key }, i) => (
-              <Fragment key={i}>
-                <span className={`mf-word inline-block ${key ? "text-kinetic" : "text-white"}`}>
-                  {w}
-                </span>
-                {i < WORDS.length - 1 ? " " : null}
-              </Fragment>
-            ))}
-          </p>
-
-          <Reveal delay={0.05}>
-            <ul className="mt-14 grid grid-cols-2 gap-px border border-iron bg-iron sm:grid-cols-4">
-              {INDEX.map((label, i) => (
-                <li
-                  key={label}
-                  className="flex items-baseline gap-3 bg-onyx px-5 py-6 transition-none hover:bg-onyx-raise"
-                >
-                  <span className="label-mono">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="display h-md text-white">{label}</span>
-                </li>
+          <div className="md:col-span-8">
+            <p
+              ref={stmt}
+              className="display max-w-[24ch] text-[clamp(1.7rem,3.6vw,3rem)] leading-[1.08] tracking-tight text-white"
+              style={{ textTransform: "none" }}
+            >
+              {WORDS.map(({ w, key }, i) => (
+                <Fragment key={i}>
+                  <span className={`mf-word inline-block ${key ? "text-kinetic" : "text-white"}`}>
+                    {w}
+                  </span>
+                  {i < WORDS.length - 1 ? " " : null}
+                </Fragment>
               ))}
-            </ul>
-          </Reveal>
+            </p>
+          </div>
         </div>
+
+        {/* the four capabilities — a full-width, evenly-split index row */}
+        <Reveal delay={0.05}>
+          <ul className="mt-14 grid grid-cols-2 gap-px border border-iron bg-iron sm:grid-cols-4 md:mt-20">
+            {INDEX.map((label, i) => (
+              <li
+                key={label}
+                className="flex items-baseline gap-3 bg-onyx px-5 py-7 transition-none hover:bg-onyx-raise"
+              >
+                <span className="label-mono">{String(i + 1).padStart(2, "0")}</span>
+                <span className="display h-md text-white">{label}</span>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
     </section>
   );

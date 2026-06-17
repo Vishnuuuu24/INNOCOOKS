@@ -23,7 +23,7 @@ export default function FinalCTA() {
         </Reveal>
         <Reveal delay={0.12}>
           <p className="mx-auto mt-8 max-w-md text-lg leading-relaxed text-ash">
-            We&apos;ll reply within 24 hours with how we&apos;d approach it — plainly, with
+            We&apos;ll reply within 24 hours with how we&apos;d approach it. Plainly, with
             no jargon and no obligation.
           </p>
         </Reveal>
