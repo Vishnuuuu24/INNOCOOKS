@@ -58,7 +58,7 @@ export default function SignalCard() {
     let isBlue = false;
 
     function check() {
-      if (cancelled || !svgEl) return;
+      if (cancelled || !svgEl || !el) return;
       const pb = parseFloat(svgEl.style.getPropertyValue("--pb") || "0");
       
       let progress = 0;

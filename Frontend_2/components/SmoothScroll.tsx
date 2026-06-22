@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { usePathname, useSearchParams } from "next/navigation";
 
 /** Lenis smooth scroll — desktop pointer devices only, never on touch,
  *  never when the user prefers reduced motion. */
-export default function SmoothScroll() {
+function SmoothScrollInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [lenisInst, setLenisInst] = useState<Lenis | null>(null);
@@ -44,4 +44,12 @@ export default function SmoothScroll() {
   }, [pathname, searchParams, lenisInst]);
 
   return null;
+}
+
+export default function SmoothScroll() {
+  return (
+    <Suspense fallback={null}>
+      <SmoothScrollInner />
+    </Suspense>
+  );
 }
