@@ -28,6 +28,8 @@ export const projects: Project[] = [
     meta: "Refined unisex salon · website · multi-branch systems (next)",
     badge: "Live in production",
     liveUrl: "https://christalinmirrors.com",
+    image:
+      "https://res.cloudinary.com/dktey3odk/image/upload/q_auto,f_auto/v1782107601/Screenshot_2026-06-22_at_11.20.32_AM_oald10.png",
     summary:
       "How InnoCooks designed and built the website for Christalin Mirrors, a refined unisex salon, and the multi-branch systems coming next.",
     phases: [
@@ -59,6 +61,8 @@ export const projects: Project[] = [
     meta: "Video editing studio · brand + portfolio",
     badge: "Live",
     liveUrl: "https://theeditsclub.in",
+    image:
+      "https://res.cloudinary.com/dktey3odk/image/upload/q_auto,f_auto/v1782107603/Screenshot_2026-06-22_at_11.21.04_AM_bmhrac.png",
     summary:
       "Brand and portfolio for The Edits Club, a video editing and visual-storytelling studio, built to let the work play front and centre.",
     phases: [
@@ -80,6 +84,8 @@ export const projects: Project[] = [
     meta: "Collective of builders · interactive studio platform",
     badge: "Live",
     liveUrl: "https://hacksters.tech",
+    image:
+      "https://res.cloudinary.com/dktey3odk/image/upload/q_auto,f_auto/v1782107603/Screenshot_2026-06-22_at_11.22.16_AM_pdzbaq.png",
     summary:
       "An interactive studio platform and portfolio for Hacksters, a collective of builders who call themselves the Innovators of Tomorrow.",
     phases: [

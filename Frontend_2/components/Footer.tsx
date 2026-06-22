@@ -14,7 +14,7 @@ const cols = [
     head: "Direct",
     items: [
       { label: "Start a project", href: "/contact/" },
-      { label: "vishnuuu24@gmail.com", href: "mailto:vishnuuu24@gmail.com" },
+      { label: "innocooks@gmail.com", href: "mailto:innocooks@gmail.com" },
     ],
   },
 ];

@@ -45,10 +45,10 @@ export default function FinalCTA() {
               </Link>
             </Magnetic>
             <a
-              href="mailto:vishnuuu24@gmail.com"
+              href="mailto:innocooks@gmail.com"
               className="label-mono label-mono--ash transition-none hover:text-kinetic"
             >
-              or write to vishnuuu24@gmail.com
+              or write to innocooks@gmail.com
             </a>
           </div>
         </Reveal>

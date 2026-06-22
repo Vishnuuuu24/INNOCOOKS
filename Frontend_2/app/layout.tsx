@@ -64,6 +64,14 @@ export const metadata: Metadata = {
     description:
       "Websites, internal management systems and AI automation for small and medium businesses.",
   },
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    shortcut: "/favicon.ico",
+  },
   keywords: [
     "InnoCooks",
     "systems studio",
@@ -82,7 +90,7 @@ const jsonLd = {
   slogan: "Cooking Innovation",
   description:
     "Systems studio building websites, internal management systems, AI workflows and automation for small and medium businesses.",
-  email: "vishnuuu24@gmail.com",
+  email: "innocooks@gmail.com",
   url: "https://innocooks.com",
   areaServed: "IN",
 };

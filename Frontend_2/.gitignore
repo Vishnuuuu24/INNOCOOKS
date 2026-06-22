@@ -7,4 +7,5 @@ next-env.d.ts
 
 # local env files (keep .env.example tracked, never commit real secrets)
 .env
-.env*.local
+.env.*
+!env.example

@@ -3,10 +3,10 @@ import SignalCard from "@/components/SignalCard";
 
 const team = [
   { name: "Vishnu Vardhan", role: "Frontend & design" },
-  { name: "", role: "Backend & infrastructure" },
-  { name: "", role: "AI & automation" },
-  { name: "", role: "Research & strategy" },
-  { name: "", role: "Pitching & client success" },
+  { name: "Meghnath S", role: "Backend & infrastructure" },
+  { name: "Priyodip Mukhopadhyay", role: "AI & automation" },
+  { name: "Vivek Rajendra Patel", role: "Research & strategy" },
+  { name: "Abijith G", role: "Pitching & client success" },
 ];
 
 export default function Studio() {

@@ -25,7 +25,7 @@
    NEXT_PUBLIC_ var — those belong behind your own endpoint.
    ════════════════════════════════════════════════════════════════════════ */
 
-export const CONTACT_EMAIL = "vishnuuu24@gmail.com";
+export const CONTACT_EMAIL = "innocooks@gmail.com";
 
 /** Trimmed so a stray space in the env var can't break the request. */
 export const CONTACT_ENDPOINT = (
