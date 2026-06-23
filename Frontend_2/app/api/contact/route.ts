@@ -21,20 +21,28 @@ function ipAllowed(ip: string): boolean {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /* Origins that are allowed to POST here. Server-rendered requests (SSR) have
-   no Origin header so we allow null. Anything else is rejected. */
+   no Origin header so we allow null. Anything else is rejected.
+   NEXT_PUBLIC_SITE_URL can be a single URL or a comma-separated list of URLs
+   e.g. "https://innocooks.hacksters.tech,https://innocooks.com" */
+const extraOrigins = (process.env.NEXT_PUBLIC_SITE_URL ?? "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 const ALLOWED_ORIGINS = new Set<string | null>([
   "https://innocooks.com",
   "https://www.innocooks.com",
-  process.env.NEXT_PUBLIC_SITE_URL ?? "",
+  ...extraOrigins,
   "http://localhost:3000",
   "http://localhost:3001",
   null,           // same-origin server-rendered forms
-].filter((o) => o !== ""));
+]);
 
 export async function POST(req: NextRequest) {
 
   // ── CSRF: only our own origins may POST ───────────────────────────────────
   const origin = req.headers.get("origin");
+  console.log("[contact] origin=%s allowed=%s set=%s", origin, ALLOWED_ORIGINS.has(origin), [...ALLOWED_ORIGINS].join("|"));
   if (!ALLOWED_ORIGINS.has(origin)) {
     return NextResponse.json({ error: "Forbidden." }, { status: 403 });
   }
